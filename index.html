@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <title>Babylon.js sample code</title>
+
+    <!-- Babylon.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js"></script>
+    <script src="https://assets.babylonjs.com/generated/Assets.js"></script>
+    <script src="https://cdn.babylonjs.com/recast.js"></script>
+    <script src="https://cdn.babylonjs.com/ammo.js"></script>
+    <script src="https://cdn.babylonjs.com/havok/HavokPhysics_umd.js"></script>
+    <script src="https://cdn.babylonjs.com/cannon.js"></script>
+    <script src="https://cdn.babylonjs.com/Oimo.js"></script>
+    <script src="https://cdn.babylonjs.com/earcut.min.js"></script>
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+    <script src="https://cdn.babylonjs.com/materialsLibrary/babylonjs.materials.min.js"></script>
+    <script src="https://cdn.babylonjs.com/proceduralTexturesLibrary/babylonjs.proceduralTextures.min.js"></script>
+    <script src="https://cdn.babylonjs.com/postProcessesLibrary/babylonjs.postProcess.min.js"></script>
+    <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.js"></script>
+    <script src="https://cdn.babylonjs.com/serializers/babylonjs.serializers.min.js"></script>
+    <script src="https://cdn.babylonjs.com/gui/babylon.gui.min.js"></script>
+    <script src="https://cdn.babylonjs.com/addons/babylonjs.addons.min.js"></script>
+    <script src="https://cdn.babylonjs.com/inspector/babylon.inspector.bundle.js"></script>
+
+    <style>
+      html,
+      body {
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      #renderCanvas {
+        width: 100%;
+        height: 100%;
+        touch-action: none;
+      }
+
+      #canvasZone {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="canvasZone"><canvas id="renderCanvas"></canvas></div>
+    <script>
+      var canvas = document.getElementById("renderCanvas");
+
+      var startRenderLoop = function (engine, canvas) {
+        engine.runRenderLoop(function () {
+          if (sceneToRender && sceneToRender.activeCamera) {
+            sceneToRender.render();
+          }
+        });
+      };
+
+      var engine = null;
+      var scene = null;
+      var sceneToRender = null;
+      var createDefaultEngine = function () {
+        return new BABYLON.Engine(canvas, true, {
+          preserveDrawingBuffer: true,
+          stencil: true,
+          disableWebGL2Support: false,
+        });
+      };
+      class Playground {
+        static CreateScene(engine, canvas) {
+          // This creates a basic Babylon Scene object (non-mesh)
+          var scene = new BABYLON.Scene(engine);
+          // This creates and positions a free camera (non-mesh)
+          var camera = new BABYLON.ArcRotateCamera(
+            "camera1",
+            0,
+            0,
+            0,
+            new BABYLON.Vector3(0, 0, -0),
+            scene
+          );
+          camera.setPosition(new BABYLON.Vector3(0, 0, -60));
+          // This targets the camera to scene origin
+          // camera.setTarget(BABYLON.Vector3.Zero());
+          // This attaches the camera to the canvas
+          camera.attachControl(canvas, true);
+          // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
+          var light = new BABYLON.HemisphericLight(
+            "light1",
+            new BABYLON.Vector3(0, 1, 0),
+            scene
+          );
+          // Default intensity is 1. Let's dim the light a small amount
+          light.intensity = 0.7;
+          var mat = new BABYLON.StandardMaterial("mat1", scene);
+          mat.alpha = 0.6;
+          mat.diffuseColor = new BABYLON.Color3(0.5, 0.5, 1.0);
+          const buildCone = (genSet) => {
+            const vertices = [[0, 0, 0]];
+            const edges = [];
+            const faces = [];
+            const top = [];
+            for (let i = 0; i < genSet.length; i++) {
+              const gen = genSet[i];
+              vertices.push([gen[0], gen[1], gen[2]]);
+              edges.push([0, i + 1]);
+              edges.push([i + 1, i + 1 == genSet.length ? 1 : i + 2]);
+              faces.push([i + 1, 0, i + 1 == genSet.length ? 1 : i + 2]);
+              top.push(i + 1);
+            }
+            faces.push(top);
+            return { vertices, edges, faces };
+          };
+          let idcount = 1;
+          const { vertices, edges, faces } = buildCone([
+            [1, 2, 1],
+            [1, 2, 2],
+            [2, 2, 1],
+          ]);
+          // Ref: https://playground.babylonjs.com/#21QRSK#1
+          var createPolyhedron = function (name, data, size, scene) {
+            var positions = [];
+            var indices = [];
+            var normals = [];
+            var uvs = [];
+            var i = 0;
+            // positions
+            for (i = 0; i < data.vertex.length; i++) {
+              positions.push(
+                data.vertex[i][0] * size,
+                data.vertex[i][1] * size,
+                data.vertex[i][2] * size
+              );
+              //uvs.push(0, 0);
+            }
+            // indices from faces
+            for (var f = 0; f < data.face.length; f++) {
+              for (i = 0; i < data.face[f].length - 2; i++) {
+                indices.push(
+                  data.face[f][0],
+                  data.face[f][i + 2],
+                  data.face[f][i + 1]
+                );
+              }
+            }
+            BABYLON.VertexData.ComputeNormals(positions, indices, normals);
+            var vertexData = new BABYLON.VertexData();
+            vertexData.positions = positions;
+            vertexData.indices = indices;
+            vertexData.normals = normals;
+            //vertexData.uvs = uvs;
+            var polygon = new BABYLON.Mesh(name, scene);
+            vertexData.applyToMesh(polygon);
+            return polygon;
+          };
+          const getCone = (genSet) => {
+            const data = buildCone(genSet);
+            const cone = createPolyhedron(
+              "Cone" + idcount,
+              { vertex: data.vertices, edge: data.edges, face: data.faces },
+              1,
+              scene
+            );
+            cone.convertToFlatShadedMesh();
+            var cmat = new BABYLON.StandardMaterial("mat" + idcount, scene);
+            cmat.alpha = 0.6;
+            cmat.diffuseColor = new BABYLON.Color3(
+              Math.random(),
+              Math.random(),
+              Math.random()
+            );
+            cone.material = cmat;
+            cone.position.y = 1;
+            idcount++;
+            return cone;
+          };
+          const v1 = [1, 0, 0];
+          const v2 = [0, 1, 0];
+          const v3 = [0, 0, 1];
+          const v4 = [-1, -1, -1];
+          const v5 = [-1, -1, 0];
+          const v6 = [0, -1, -1];
+          const v7 = [-1, 0, -1];
+          const s0 = getCone([v1, v2, v3]);
+          const s1 = getCone([v1, v2, v7]);
+          const s2 = getCone([v1, v3, v6]);
+          const s3 = getCone([v1, v6, v7]);
+          const s4 = getCone([v2, v3, v5]);
+          const s5 = getCone([v2, v5, v7]);
+          const s6 = getCone([v3, v5, v6]);
+          const s7 = getCone([v4, v5, v6]);
+          const s8 = getCone([v4, v5, v7]);
+          const s9 = getCone([v4, v6, v7]);
+          var sphere = BABYLON.MeshBuilder.CreateSphere(
+            "sphere",
+            { diameter: 0.1, segments: 32 },
+            scene
+          );
+          sphere.position.y = 1;
+          // Our built-in 'ground' shape. Params: name, options, scene
+          // var ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 6, height: 6}, scene);
+          return scene;
+        }
+      }
+      createScene = function () {
+        return Playground.CreateScene(engine, engine.getRenderingCanvas());
+      };
+      window.initFunction = async function () {
+        var asyncEngineCreation = async function () {
+          try {
+            return createDefaultEngine();
+          } catch (e) {
+            console.log(
+              "the available createEngine function failed. Creating the default engine instead"
+            );
+            return createDefaultEngine();
+          }
+        };
+
+        window.engine = await asyncEngineCreation();
+
+        const engineOptions = window.engine.getCreationOptions?.();
+        if (!engineOptions || engineOptions.audioEngine !== false) {
+        }
+        if (!engine) throw "engine should not be null.";
+        startRenderLoop(engine, canvas);
+        window.scene = createScene();
+      };
+      initFunction().then(() => {
+        sceneToRender = scene;
+      });
+
+      // Resize
+      window.addEventListener("resize", function () {
+        engine.resize();
+      });
+    </script>
+  </body>
+</html>
