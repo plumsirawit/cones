@@ -58,7 +58,10 @@
       σ6: <input type="checkbox" id="chs6" checked><br/>
       σ7: <input type="checkbox" id="chs7" checked><br/>
       σ8: <input type="checkbox" id="chs8" checked><br/>
-      σ9: <input type="checkbox" id="chs9" checked>
+      σ9: <input type="checkbox" id="chs9" checked><br/>
+      plane1: <input type="checkbox" id="chp1" checked><br/>
+      plane2: <input type="checkbox" id="chp2" checked><br/>
+      plane3: <input type="checkbox" id="chp3" checked><br/>      
     </div>
     <script>
       var canvas = document.getElementById("renderCanvas");
@@ -262,6 +265,7 @@
           );
           pmat3.alpha = 0.3;
           plane3.material = pmat3;
+          window.planes = [plane1, plane2, plane3];
           return scene;
         }
       }
@@ -327,6 +331,15 @@
       document.getElementById("chs9").addEventListener("change", (e) => {
         window.cones[9].visibility = e.target.checked ? 1 : 0;
       });
+      document.getElementById("chp1").addEventListener("change", (e) => {
+        window.planes[0].visibility = e.target.checked ? 1 : 0;
+      });
+      document.getElementById("chp2").addEventListener("change", (e) => {
+        window.planes[1].visibility = e.target.checked ? 1 : 0;
+      });
+      document.getElementById("chp3").addEventListener("change", (e) => {
+        window.planes[2].visibility = e.target.checked ? 1 : 0;
+      });
       document.getElementById("chs0").checked = true;
       document.getElementById("chs1").checked = true;
       document.getElementById("chs2").checked = true;
@@ -337,6 +350,9 @@
       document.getElementById("chs7").checked = true;
       document.getElementById("chs8").checked = true;
       document.getElementById("chs9").checked = true;
+      document.getElementById("chp1").checked = true;
+      document.getElementById("chp2").checked = true;
+      document.getElementById("chp3").checked = true;
     </script>
   </body>
 </html>
