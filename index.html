@@ -45,23 +45,99 @@
         height: 100%;
       }
     </style>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css"
+      integrity="sha384-zh0CIslj+VczCZtlzBcjt5ppRcsAmDnRem7ESsYwWwg3m/OaJ2l4x7YBZl9Kxxib"
+      crossorigin="anonymous"
+    />
+
+    <!-- The loading of KaTeX is deferred to speed up page rendering -->
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"
+      integrity="sha384-Rma6DA2IPUwhNxmrB/7S3Tno0YY7sFu9WSYMCuulLhIqYSGZ2gKCJWIqhBWqMQfh"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"
+      integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        renderMathInElement(document.body, {
+          // customised options
+          // • auto-render specific keys, e.g.:
+          delimiters: [
+            { left: "$$", right: "$$", display: true },
+            { left: "$", right: "$", display: false },
+            { left: "\\(", right: "\\)", display: false },
+            { left: "\\[", right: "\\]", display: true },
+          ],
+          // • rendering keys, e.g.:
+          throwOnError: false,
+        });
+      });
+    </script>
   </head>
   <body>
     <div id="canvasZone"><canvas id="renderCanvas"></canvas></div>
-    <div id="checkboxes" style="position: absolute; top: 10%; right: 10%; background: white; padding: 10px; border-radius: 4px;">
-      σ0: <input type="checkbox" id="chs0" checked><br/>
-      σ1: <input type="checkbox" id="chs1" checked><br/>
-      σ2: <input type="checkbox" id="chs2" checked><br/>
-      σ3: <input type="checkbox" id="chs3" checked><br/>
-      σ4: <input type="checkbox" id="chs4" checked><br/>
-      σ5: <input type="checkbox" id="chs5" checked><br/>
-      σ6: <input type="checkbox" id="chs6" checked><br/>
-      σ7: <input type="checkbox" id="chs7" checked><br/>
-      σ8: <input type="checkbox" id="chs8" checked><br/>
-      σ9: <input type="checkbox" id="chs9" checked><br/>
-      plane1: <input type="checkbox" id="chp1" checked><br/>
-      plane2: <input type="checkbox" id="chp2" checked><br/>
-      plane3: <input type="checkbox" id="chp3" checked><br/>      
+    <div
+      id="checkboxes"
+      style="
+        position: absolute;
+        top: 10%;
+        right: 10%;
+        background: white;
+        padding: 10px;
+        border-radius: 4px;
+      "
+    >
+      $\sigma_0:$ <input type="checkbox" id="chs0" checked /><br />
+      $\sigma_1:$ <input type="checkbox" id="chs1" checked /><br />
+      $\sigma_2:$ <input type="checkbox" id="chs2" checked /><br />
+      $\sigma_3:$ <input type="checkbox" id="chs3" checked /><br />
+      $\sigma_4:$ <input type="checkbox" id="chs4" checked /><br />
+      $\sigma_5:$ <input type="checkbox" id="chs5" checked /><br />
+      $\sigma_6:$ <input type="checkbox" id="chs6" checked /><br />
+      $\sigma_7:$ <input type="checkbox" id="chs7" checked /><br />
+      $\sigma_8:$ <input type="checkbox" id="chs8" checked /><br />
+      $\sigma_9:$ <input type="checkbox" id="chs9" checked /><br />
+      $\text{plane}_1:$ <input type="checkbox" id="chp1" checked /><br />
+      $\text{plane}_2:$ <input type="checkbox" id="chp2" checked /><br />
+      $\text{plane}_3:$ <input type="checkbox" id="chp3" checked /><br />
+      $v_i:$ <input type="checkbox" id="chvi" checked /><br />
+    </div>
+    <div
+      id="descriptions"
+      style="
+        position: absolute;
+        top: 10%;
+        left: 10%;
+        background: white;
+        padding: 10px;
+        border-radius: 4px;
+      "
+    >
+      $\colorbox{#FFFFFF}{$\sigma_0$} = \langle v_1, v_2, v_3 \rangle$ <br />
+      $\colorbox{#FFFF7F}{$\sigma_1$} = \langle v_1, v_2, v_7 \rangle$ <br />
+      $\colorbox{#FF7FFF}{$\sigma_2$} = \langle v_1, v_3, v_6 \rangle$ <br />
+      $\colorbox{#7FFFFF}{$\sigma_3$} = \langle v_1, v_6, v_7 \rangle$ <br />
+      $\colorbox{#FF7F7F}{$\sigma_4$} = \langle v_2, v_3, v_5 \rangle$ <br />
+      $\colorbox{#7FFF7F}{$\sigma_5$} = \langle v_2, v_5, v_7 \rangle$ <br />
+      $\colorbox{#7F7FFF}{$\sigma_6$} = \langle v_3, v_5, v_6 \rangle$ <br />
+      $\colorbox{#7F7F7F}{$\sigma_7$} = \langle v_4, v_5, v_6 \rangle$ <br />
+      $\colorbox{#7F7F00}{$\sigma_8$} = \langle v_4, v_5, v_7 \rangle$ <br />
+      $\colorbox{#7F007F}{$\sigma_9$} = \langle v_4, v_6, v_7 \rangle$ <br />
+      $v_1 = (1, 0, 0)$ <br />
+      $v_2 = (0, 1, 0)$ <br />
+      $v_3 = (0, 0, 1)$ <br />
+      $v_4 = (-1, -1, -1)$ <br />
+      $v_5 = (-1, -1, 0)$ <br />
+      $v_6 = (0, -1, -1)$ <br />
+      $v_7 = (-1, 0, -1)$ <br />
     </div>
     <script>
       var canvas = document.getElementById("renderCanvas");
@@ -97,7 +173,10 @@
             new BABYLON.Vector3(0, 0, -0),
             scene
           );
-          camera.setPosition(new BABYLON.Vector3(0, 0, -60));
+          camera.setPosition(new BABYLON.Vector3(20, 30, -60));
+          camera.lowerRadiusLimit = 2;
+          camera.upperRadiusLimit = 20;
+          camera.radius = 10;
           // This targets the camera to scene origin
           // camera.setTarget(BABYLON.Vector3.Zero());
           // This attaches the camera to the canvas
@@ -182,7 +261,7 @@
             [0.5, 0.5, 0.5],
             [0.5, 0.5, 0],
             [0.5, 0, 0.5],
-            [0, 0.5, 0.5]
+            [0, 0.5, 0.5],
           ];
           const getCone = (genSet) => {
             const data = buildCone(genSet);
@@ -196,12 +275,12 @@
             var cmat = new BABYLON.StandardMaterial("mat" + idcount, scene);
             cmat.alpha = 0.8;
             cmat.diffuseColor = new BABYLON.Color3(
-              colors[idcount-1][0],
-              colors[idcount-1][1],
-              colors[idcount-1][2]
+              colors[idcount - 1][0],
+              colors[idcount - 1][1],
+              colors[idcount - 1][2]
             );
             cone.material = cmat;
-            cone.position.y = 1;
+            // cone.position.y = 1;
             idcount++;
             return cone;
           };
@@ -228,44 +307,163 @@
             { diameter: 0.1, segments: 32 },
             scene
           );
-          sphere.position.y = 1;
+          //   sphere.position.y = 1;
           // Our built-in 'ground' shape. Params: name, options, scene
           // var ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 6, height: 6}, scene);
           // ground.position.y = 1;
-          const plane1 = BABYLON.MeshBuilder.CreatePlane("plane1", {width: 6, height: 6, sideOrientation: BABYLON.Mesh.DOUBLESIDE}, scene);
-          plane1.position.y = 1;
-          plane1.rotate(new BABYLON.Vector3(1, 0, 0), Math.PI/2);
-          var pmat1 = new BABYLON.StandardMaterial("pmat1", scene);
-          pmat1.diffuseColor = new BABYLON.Color3(
-              0.5,
-              1,
-              1
+          const plane1 = BABYLON.MeshBuilder.CreatePlane(
+            "plane1",
+            { width: 6, height: 6, sideOrientation: BABYLON.Mesh.DOUBLESIDE },
+            scene
           );
+          //   plane1.position.y = 1;
+          plane1.rotate(new BABYLON.Vector3(1, 0, 0), Math.PI / 2);
+          var pmat1 = new BABYLON.StandardMaterial("pmat1", scene);
+          pmat1.diffuseColor = new BABYLON.Color3(0.5, 1, 1);
           pmat1.alpha = 0.3;
           plane1.material = pmat1;
-          const plane2 = BABYLON.MeshBuilder.CreatePlane("plane2", {width: 6, height: 6, sideOrientation: BABYLON.Mesh.DOUBLESIDE}, scene);
-          plane2.position.y = 1;
-          plane2.rotate(new BABYLON.Vector3(0, 1, 0), Math.PI/2);
-          var pmat2 = new BABYLON.StandardMaterial("pmat2", scene);
-          pmat2.diffuseColor = new BABYLON.Color3(
-              1,
-              0.5,
-              1
+          const plane2 = BABYLON.MeshBuilder.CreatePlane(
+            "plane2",
+            { width: 6, height: 6, sideOrientation: BABYLON.Mesh.DOUBLESIDE },
+            scene
           );
+          //   plane2.position.y = 1;
+          plane2.rotate(new BABYLON.Vector3(0, 1, 0), Math.PI / 2);
+          var pmat2 = new BABYLON.StandardMaterial("pmat2", scene);
+          pmat2.diffuseColor = new BABYLON.Color3(1, 0.5, 1);
           pmat2.alpha = 0.3;
           plane2.material = pmat2;
-          const plane3 = BABYLON.MeshBuilder.CreatePlane("plane3", {width: 6, height: 6, sideOrientation: BABYLON.Mesh.DOUBLESIDE}, scene);
-          plane3.position.y = 1;
-          plane3.rotate(new BABYLON.Vector3(0, 0, 1), Math.PI/2);
-          var pmat3 = new BABYLON.StandardMaterial("pmat3", scene);
-          pmat3.diffuseColor = new BABYLON.Color3(
-              1,
-              1,
-              0.5
+          const plane3 = BABYLON.MeshBuilder.CreatePlane(
+            "plane3",
+            { width: 6, height: 6, sideOrientation: BABYLON.Mesh.DOUBLESIDE },
+            scene
           );
+          //   plane3.position.y = 1;
+          plane3.rotate(new BABYLON.Vector3(0, 0, 1), Math.PI / 2);
+          var pmat3 = new BABYLON.StandardMaterial("pmat3", scene);
+          pmat3.diffuseColor = new BABYLON.Color3(1, 1, 0.5);
           pmat3.alpha = 0.3;
           plane3.material = pmat3;
           window.planes = [plane1, plane2, plane3];
+          var sprites = [
+            {
+              pos: new BABYLON.Vector3(1.0, 0, 0),
+              elem: document.createElement("p"),
+              color: "#dfdfdf",
+              width: 25,
+              height: 25,
+            },
+            {
+              pos: new BABYLON.Vector3(0, 1.0, 0),
+              elem: document.createElement("p"),
+              color: "#dfdfdf",
+              width: 25,
+              height: 25,
+            },
+            {
+              pos: new BABYLON.Vector3(0, 0, 1.0),
+              elem: document.createElement("p"),
+              color: "#dfdfdf",
+              width: 25,
+              height: 25,
+            },
+            {
+              pos: new BABYLON.Vector3(-1.0, -1.0, -1.0),
+              elem: document.createElement("p"),
+              color: "#dfdfdf",
+              width: 25,
+              height: 25,
+            },
+            {
+              pos: new BABYLON.Vector3(-1.0, -1.0, 0),
+              elem: document.createElement("p"),
+              color: "#dfdfdf",
+              width: 25,
+              height: 25,
+            },
+            {
+              pos: new BABYLON.Vector3(0, -1.0, -1.0),
+              elem: document.createElement("p"),
+              color: "#dfdfdf",
+              width: 25,
+              height: 25,
+            },
+            {
+              pos: new BABYLON.Vector3(-1.0, 0, -1.0),
+              elem: document.createElement("p"),
+              color: "#dfdfdf",
+              width: 25,
+              height: 25,
+            },
+          ];
+
+          sprites.forEach((sprite, i) => {
+            sprite.elem.innerHTML = "$v_" + (i + 1) + "$";
+            document.addEventListener("DOMContentLoaded", function () {
+              renderMathInElement(sprite.elem);
+            });
+            sprite.elem.style.position = "absolute";
+            sprite.elem.style.width = sprite.width + "px";
+            sprite.elem.style.height = sprite.height + "px";
+            sprite.elem.style.backgroundColor = sprite.color;
+            sprite.elem.style.textAlign = "center";
+            sprite.elem.style.top = "0px";
+            sprite.elem.style.left = "0px";
+
+            canvasZone.appendChild(sprite.elem);
+          });
+          window.sprites = sprites;
+          var renderer = scene.enableDepthRenderer(camera, false);
+          var depthMap = renderer.getDepthMap();
+
+          var buffer = new Float32Array(
+            4 * depthMap.getSize().width * depthMap.getSize().height
+          );
+
+          scene.onAfterRenderObservable.add(() => {
+            depthMap.readPixels(0, 0, buffer);
+
+            sprites.forEach((sprite) => {
+              var posInView = BABYLON.Vector3.TransformCoordinates(
+                sprite.pos,
+                scene.getViewMatrix()
+              );
+              var posInViewProj = BABYLON.Vector3.TransformCoordinates(
+                sprite.pos,
+                scene.getTransformMatrix()
+              );
+              var screenCoords = posInViewProj
+                .multiplyByFloats(0.5, -0.5, 1.0)
+                .add(new BABYLON.Vector3(0.5, 0.5, 0.0))
+                .multiplyByFloats(
+                  engine.getRenderWidth(),
+                  engine.getRenderHeight(),
+                  1
+                );
+
+              var px = screenCoords.x - sprite.width / 2;
+              var py = screenCoords.y - sprite.height / 2;
+
+              sprite.elem.style.left = px + canvasZone.offsetLeft + "px";
+              sprite.elem.style.top = py + canvasZone.offsetTop + "px";
+
+              px = Math.floor(px + sprite.width / 2);
+              py = Math.floor(
+                engine.getRenderHeight() - (py + sprite.height / 2)
+              );
+
+              var zInZBuff = buffer[4 * (px + py * depthMap.getSize().width)];
+
+              var z =
+                (posInView.z - camera.minZ) / (-camera.minZ + camera.maxZ);
+
+              if (z > zInZBuff) {
+                sprite.elem.style.opacity = 0.3;
+              } else {
+                sprite.elem.style.opacity = 1.0;
+              }
+            });
+          });
           return scene;
         }
       }
@@ -340,6 +538,13 @@
       document.getElementById("chp3").addEventListener("change", (e) => {
         window.planes[2].visibility = e.target.checked ? 1 : 0;
       });
+      document.getElementById("chvi").addEventListener("change", (e) => {
+        window.sprites.forEach((sprite) => {
+          sprite.elem.style.visibility = e.target.checked
+            ? "visible"
+            : "hidden";
+        });
+      });
       document.getElementById("chs0").checked = true;
       document.getElementById("chs1").checked = true;
       document.getElementById("chs2").checked = true;
@@ -353,6 +558,7 @@
       document.getElementById("chp1").checked = true;
       document.getElementById("chp2").checked = true;
       document.getElementById("chp3").checked = true;
+      document.getElementById("chvi").checked = true;
     </script>
   </body>
 </html>
